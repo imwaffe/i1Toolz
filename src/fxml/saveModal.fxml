@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="422.0" stylesheets="@../resources/css/mainStyle.css" xmlns="http://javafx.com/javafx/8.0.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="134.0" prefWidth="422.0">
+               <children>
+                  <Text fill="WHITE" layoutX="65.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The current project has not been saved." textAlignment="CENTER" wrappingWidth="292.13671875">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fill="WHITE" layoutX="65.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you don't save the project, all changes will be lost." textAlignment="CENTER" wrappingWidth="292.13671875">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <HBox alignment="CENTER" prefHeight="54.0" prefWidth="422.0">
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: green;" text="Save" />
+                  <Button mnemonicParsing="false" text="Cancel" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" style="-fx-background-color: red;" text="Don't save">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

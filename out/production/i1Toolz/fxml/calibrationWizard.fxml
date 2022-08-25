@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="mainPane" prefHeight="490.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/8.0.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CalibrationWizardController">
+   <center>
+      <Pane id="currentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="740.0" stylesheets="@../resources/css/mainStyle.css">
+         <children>
+            <Text fill="WHITE" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calibrate instrument" wrappingWidth="327.13671875">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Text>
+            <Button layoutX="14.0" layoutY="440.0" mnemonicParsing="false" onAction="#cancel" prefHeight="36.0" prefWidth="147.0" text="Go back..." />
+            <Text fill="WHITE" layoutX="201.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected measurement mode: " wrappingWidth="166.470703125" />
+            <Text fx:id="selectedModeText" fill="WHITE" layoutX="370.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="166.470703125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="287.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="When done, press the button on the instrument to calibrate..." textAlignment="CENTER" wrappingWidth="166.470703125">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="instructionsTextRefectance" fill="WHITE" layoutX="284.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please place the instrument on its white reflective surface." textAlignment="CENTER" wrappingWidth="166.470703125">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="instructionTextEmissive" fill="WHITE" layoutX="284.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please put on the light-proof cap on the instrument or place it facing down on a dark matte surface" textAlignment="CENTER" visible="false" wrappingWidth="166.470703125">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="249.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last calibration date: " wrappingWidth="117.470703125" />
+            <Text fx:id="lastCalibrationText" fill="WHITE" layoutX="370.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="166.470703125">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text fx:id="successCalibrationText" fill="#08eb00" layoutX="273.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calibration successfull!" textAlignment="CENTER" visible="false">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="failedCalibrationText" fill="RED" layoutX="232.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calibration failed! Please retry..." textAlignment="CENTER" visible="false">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="calibrationInProgressText" fill="#aea7dd" layoutX="200.0" layoutY="394.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calibrating, dont move the instrument..." textAlignment="CENTER" visible="false">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

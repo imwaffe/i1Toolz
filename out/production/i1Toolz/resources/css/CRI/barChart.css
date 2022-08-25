@@ -1,0 +1,33 @@
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: #FFFFFF20;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #FFFFFF20;
+}
+.chart-legend {
+   -fx-background-color:  transparent;
+   -fx-padding: 20px;
+   -fx-fill: #eeeeee;
+}
+.chart-series-line {
+	-fx-effect: dropshadow( gaussian, #FFFFFF33, 8, 0, 0, 0 );
+}
+
+.data0.chart-bar { -fx-bar-fill: #e8a7b0 }
+.data1.chart-bar { -fx-bar-fill: #ccb184 }
+.data2.chart-bar { -fx-bar-fill: #91c06c }
+.data3.chart-bar { -fx-bar-fill: #3ac5b1 }
+.data4.chart-bar { -fx-bar-fill: #5ec2e9 }
+.data5.chart-bar { -fx-bar-fill: #83b7ff }
+.data6.chart-bar { -fx-bar-fill: #eda6f2 }
+.data7.chart-bar { -fx-bar-fill: #ffa4db }
+.data8.chart-bar { -fx-bar-fill: #ff2326 }
+.data9.chart-bar { -fx-bar-fill: #eaf365 }
+.data10.chart-bar { -fx-bar-fill: #00acac }
+.data11.chart-bar { -fx-bar-fill: #005dcd }
+.data12.chart-bar { -fx-bar-fill: #ffe8d4 }
+.data13.chart-bar { -fx-bar-fill: #5c7d55 }
+.data14.chart-bar { -fx-bar-fill: #000000 }
