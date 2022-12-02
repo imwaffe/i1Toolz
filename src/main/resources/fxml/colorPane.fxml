@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.armellinluca.i1Toolz.Helpers.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="765.0" prefWidth="1412.0" styleClass="currentPane" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.ColorController">
+   <center>
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="765.0" prefWidth="1411.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" minWidth="10.0" prefWidth="932.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="261.0" minHeight="10.0" prefHeight="257.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="669.0" minHeight="10.0" prefHeight="394.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="235.0" minHeight="0.0" prefHeight="115.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="256.0" prefWidth="961.0">
+               <top>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Measurements" BorderPane.alignment="BOTTOM_CENTER">
+                     <BorderPane.margin>
+                        <Insets top="10.0" />
+                     </BorderPane.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </top>
+               <center>
+                  <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#selectRow" prefHeight="191.0" prefWidth="882.0" BorderPane.alignment="CENTER">
+                     <columns>
+                        <TableColumn fx:id="flag" prefWidth="23.0" />
+                        <TableColumn fx:id="id" prefWidth="41.0" text="#" />
+                        <TableColumn fx:id="label" prefWidth="370.0" text="Label" />
+                        <TableColumn fx:id="L" prefWidth="70.0" text="L*" />
+                        <TableColumn fx:id="A" prefWidth="70.0" text="a*" />
+                        <TableColumn fx:id="B" prefWidth="70.0" text="b*" />
+                        <TableColumn fx:id="X" prefWidth="70.0" text="X" />
+                        <TableColumn fx:id="Y" prefWidth="70.0" text="Y" />
+                        <TableColumn fx:id="Z" prefWidth="70.0" text="Z" />
+                     </columns>
+                  </TableView>
+               </center>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+               <center>
+                  <Button fx:id="takeMeasurementButton" disable="true" mnemonicParsing="false" prefHeight="54.0" prefWidth="186.0" text="Take measurement" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <GridPane prefHeight="374.0" prefWidth="870.0" GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="453.0" minHeight="10.0" prefHeight="163.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="309.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="449.0" minHeight="10.0" prefHeight="181.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <GridPane prefHeight="0.0" prefWidth="865.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="306.0" minHeight="10.0" prefHeight="148.0" vgrow="ALWAYS" />
+                    </rowConstraints>
+                     <children>
+                        <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <center>
+                              <Pane fx:id="refColorSingle" maxWidth="-Infinity" prefHeight="132.0" prefWidth="137.0" style="-fx-background-color: #a0a0a0; -fx-border-color: #a0a0a0; -fx-border-width: 20;" BorderPane.alignment="CENTER" />
+                           </center>
+                           <right>
+                              <Pane fx:id="refColorPair" maxWidth="-Infinity" prefHeight="139.0" prefWidth="121.0" style="-fx-background-color: #a0a0a0; -fx-border-color: #a0a0a0; -fx-border-width: 20 0 20 20;" BorderPane.alignment="CENTER" />
+                           </right>
+                        </BorderPane>
+                        <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <left>
+                              <Pane fx:id="sampleColorPair" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="139.0" prefWidth="122.0" style="-fx-background-color: #a0a0a0; -fx-border-color: #a0a0a0; -fx-border-width: 20 20 20 0;" BorderPane.alignment="CENTER" />
+                           </left>
+                           <center>
+                              <Pane fx:id="sampleColorSingle" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="132.0" prefWidth="137.0" style="-fx-background-color: #a0a0a0; -fx-border-color: #a0a0a0; -fx-border-width: 20;" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </GridPane>
+                  <BorderPane prefHeight="116.0" prefWidth="947.0" GridPane.rowIndex="1">
+                     <center>
+                        <Pane maxWidth="-Infinity" prefHeight="43.0" prefWidth="221.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Text fill="#dadada" layoutX="68.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ΔE*76">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextNumber fx:id="deVal" fill="WHITE" layoutX="124.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="60.13671875">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </TextNumber>
+                           </children>
+                        </Pane>
+                     </center>
+                  </BorderPane>
+                  <GridPane maxHeight="-Infinity" prefHeight="194.0" prefWidth="865.0" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="204.0" minHeight="0.0" prefHeight="110.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <BorderPane maxHeight="1.7976931348623157E308" style="-fx-padding: 20;">
+                           <center>
+                              <GridPane prefHeight="386.0" prefWidth="692.0" style="-fx-background-color: #ffffff09; -fx-region-border: 20 20 20 20; -fx-background-radius: 10 10 0 0;">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="87.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="112.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="RGB" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE XYZ 1931" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE L*a*b*" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE L*u'v'" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="refValRGB" editable="false" GridPane.rowIndex="2" />
+                                    <TextField fx:id="refValXYZ" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="refValLab" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="refValLuv" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Red" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Green" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Blue" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="refValRed" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refValGreen" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refValBlue" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                       <bottom>
+                                          <TextField fx:id="refValHex" editable="false" BorderPane.alignment="CENTER" />
+                                       </bottom>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <left>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="56.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="X" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Y" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Z" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="refValX" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refValY" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refValZ" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </left>
+                                       <right>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="49.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="x" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="y" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="refVal_x" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refVal_y" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </right>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="L*" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="a*" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="b*" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="refValL" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refVal_a" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refVal_b" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="L*" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="u'" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="v'" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="refValL1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refVal_u" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="refVal_v" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </GridPane>
+                           </center>
+                        </BorderPane>
+                        <BorderPane maxHeight="1.7976931348623157E308" prefHeight="105.0" prefWidth="459.0" style="-fx-padding: 20;" GridPane.columnIndex="1">
+                           <center>
+                              <GridPane prefHeight="386.0" prefWidth="692.0" style="-fx-background-color: #ffffff09; -fx-region-border: 20 20 20 20; -fx-background-radius: 10 10 0 0;">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="87.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="112.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="RGB" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE XYZ 1931" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE L*a*b*" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#b9b9b9" strokeType="OUTSIDE" strokeWidth="0.0" text="CIE L*u'v'" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="sampleValRGB" editable="false" GridPane.rowIndex="2" />
+                                    <TextField fx:id="sampleValXYZ" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="sampleValLab" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="sampleValLuv" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Red" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Green" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Blue" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="sampleValRed" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleValGreen" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleValBlue" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                       <bottom>
+                                          <TextField fx:id="sampleValHex" editable="false" BorderPane.alignment="CENTER" />
+                                       </bottom>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <left>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="56.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="X" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Y" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Z" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="sampleValX" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleValY" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleValZ" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </left>
+                                       <right>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="34.0" prefWidth="49.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="x" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="y" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="sampleVal_x" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleVal_y" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </right>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="L*" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="a*" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="b*" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="sampleValL" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleVal_a" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleVal_b" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="59.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="L*" GridPane.halignment="RIGHT">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="u'" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="v'" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets right="3.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <TextNumber fx:id="sampleValL1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleVal_u" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                                <TextNumber fx:id="sampleVal_v" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="---" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="3.0" />
+                                                   </GridPane.margin>
+                                                </TextNumber>
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </GridPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <VBox GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <children>
+                  <LineChart fx:id="spectrumChart" prefHeight="193.0" prefWidth="482.0" stylesheets="@../css/lineChart.css">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+                  <HBox prefHeight="185.0" prefWidth="482.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScatterChart maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/lineChart.css" fx:id="xyChart">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </ScatterChart>
+                        <ScatterChart fx:id="abChart" stylesheets="@../css/lineChart.css">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </ScatterChart>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <BorderPane GridPane.columnIndex="1">
+               <center>
+                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="139.0" prefWidth="404.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.0" minWidth="10.0" prefWidth="121.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="253.0" minWidth="10.0" prefWidth="253.0" />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Button fx:id="deleteMeasurement" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Delete" GridPane.halignment="CENTER" />
+                        <Button id="setReferenceButton" fx:id="setReference" mnemonicParsing="false" onMouseClicked="#setReferenceMeasurement" prefHeight="27.0" prefWidth="116.0" text="Set reference" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <ComboBox fx:id="rgbSpace" prefHeight="29.0" prefWidth="216.0" promptText="D65" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="rgbSpace1" layoutX="205.0" layoutY="211.0" prefHeight="29.0" prefWidth="216.0" promptText="sRGB" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="RGB space" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Reference white point" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Text fill="#e4e4e4" strokeType="OUTSIDE" strokeWidth="0.0" text="Color difference metric" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <ComboBox prefHeight="29.0" prefWidth="216.0" promptText="DE*76" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                     </children>
+                  </GridPane>
+               </center>
+            </BorderPane>
+            <Button fx:id="saveMeasurement" mnemonicParsing="false" prefHeight="25.0" prefWidth="165.0" text="Select save directory..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>
