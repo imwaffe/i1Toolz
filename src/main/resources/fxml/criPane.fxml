@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -22,7 +23,7 @@
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="916.0" />
-            <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="1061.0" minWidth="10.0" prefWidth="364.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1061.0" minWidth="-Infinity" prefWidth="350.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="230.0" vgrow="SOMETIMES" />
@@ -32,7 +33,7 @@
          <children>
             <BorderPane prefHeight="234.0" prefWidth="920.0">
                <center>
-                  <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#selectRow" prefHeight="191.0" prefWidth="824.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" onMouseClicked="#selectRow" prefHeight="191.0" prefWidth="824.0" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="flag" prefWidth="30.0" />
                       <TableColumn fx:id="id" prefWidth="40.0" text="#" />
@@ -44,6 +45,9 @@
                         <TableColumn fx:id="X" prefWidth="60.0" text="x" />
                         <TableColumn fx:id="Y" prefWidth="60.0" text="y" />
                     </columns>
+                     <BorderPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </BorderPane.margin>
                   </TableView>
                </center>
                <top>
@@ -55,6 +59,35 @@
                         <Font size="16.0" />
                      </font></Text>
                </top>
+            </BorderPane>
+            <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <center>
+                  <Button fx:id="saveMeasurement" disable="true" mnemonicParsing="false" onMouseClicked="#saveMeasurement" prefHeight="25.0" prefWidth="165.0" text="Select save directory..." />
+               </center>
+            </BorderPane>
+            <BarChart fx:id="criChart" stylesheets="@../css/CRI/barChart.css" GridPane.rowIndex="1">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+               </GridPane.margin>
+            </BarChart>
+            <ScatterChart fx:id="uvChart" maxHeight="350.0" maxWidth="350.0" stylesheets="@../css/lineChart.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <xAxis>
+                <NumberAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </ScatterChart>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+               <center>
+                  <Button fx:id="takeMeasurementButton" disable="true" mnemonicParsing="false" onMouseClicked="#takeMeasurement" prefHeight="54.0" prefWidth="186.0" text="Take measurement" BorderPane.alignment="CENTER" />
+               </center>
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <top>
@@ -84,58 +117,33 @@
                   </BorderPane>
                </top>
                <bottom>
-                  <BorderPane prefHeight="47.0" prefWidth="385.0" BorderPane.alignment="CENTER">
+                  <BorderPane prefHeight="66.0" prefWidth="312.0" BorderPane.alignment="CENTER">
                      <center>
-                        <BorderPane prefHeight="67.0" prefWidth="365.0" BorderPane.alignment="CENTER">
+                        <BorderPane BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets right="20.0" />
                            </BorderPane.margin>
                            <center>
-                              <Button fx:id="deleteMeasurement" mnemonicParsing="false" onMouseClicked="#deleteMeasurement" prefHeight="0.0" prefWidth="90.0" text="Delete" />
+                              <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="deleteMeasurement" layoutX="124.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#deleteMeasurement" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                                 </children>
+                              </Pane>
                            </center>
                         </BorderPane>
                      </center>
                   </BorderPane>
                </bottom>
                <center>
-                  <BorderPane prefHeight="135.0" prefWidth="385.0" BorderPane.alignment="CENTER">
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <center>
-                        <ListView fx:id="measurementDetails" prefHeight="138.0" prefWidth="345.0" BorderPane.alignment="CENTER">
+                        <ListView fx:id="measurementDetails" prefHeight="233.0" prefWidth="187.0" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
-                              <Insets left="20.0" right="40.0" />
+                              <Insets right="20.0" />
                            </BorderPane.margin>
                         </ListView>
                      </center>
                   </BorderPane>
-               </center>
-            </BorderPane>
-            <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <center>
-                  <Button fx:id="saveMeasurement" mnemonicParsing="false" onMouseClicked="#saveMeasurement" prefHeight="25.0" prefWidth="165.0" text="Select save directory..." />
-               </center>
-            </BorderPane>
-            <BarChart fx:id="criChart" stylesheets="@../css/CRI/barChart.css" GridPane.rowIndex="1">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-               <GridPane.margin>
-                  <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
-               </GridPane.margin>
-            </BarChart>
-            <ScatterChart fx:id="uvChart" maxHeight="350.0" maxWidth="350.0" stylesheets="@../css/lineChart.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
-              <xAxis>
-                <NumberAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </ScatterChart>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-               <center>
-                  <Button fx:id="takeMeasurementButton" disable="true" mnemonicParsing="false" onMouseClicked="#takeMeasurement" prefHeight="54.0" prefWidth="186.0" text="Take measurement" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </children>

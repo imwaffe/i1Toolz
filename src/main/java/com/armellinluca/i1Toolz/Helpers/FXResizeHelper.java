@@ -30,8 +30,8 @@ public class FXResizeHelper {
     private double mWidthStore, mHeightStore, mXStore, mYStore;
 
     /**
-     * Create an FXResizeHelper for undecoreated JavaFX Stages.
-     * The only wich is your job is to create an padding for the Stage so the user can resize it.
+     * Create an FXResizeHelper for undecorated JavaFX Stages.
+     * The only which is your job is to create an padding for the Stage so the user can resize it.
      *
      * @param stage - The JavaFX Stage.
      * @param dt    - The area (in px) where the user can drag the window.
@@ -58,8 +58,8 @@ public class FXResizeHelper {
     }
 
     /**
-     * If the stage is maximized, it will be restored to the last postition
-     * with heigth and width. Otherwise it will be maximized to fullscreen.
+     * If the stage is maximized, it will be restored to the last position
+     * with height and width. Otherwise it will be maximized to fullscreen.
      */
     public void switchWindowedMode() {
         if (mIsMaximized) {

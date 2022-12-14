@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -21,7 +22,8 @@ public class i1Toolz extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/mainWindow.fxml"));
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
+        Parent root = mainLoader.load();
         primaryStage.setTitle("com/armellin/i1Toolz/i1Toolz");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-16.png")));
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-32.png")));
@@ -30,7 +32,16 @@ public class i1Toolz extends Application {
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-256.png")));
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-512.png")));
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setScene(new Scene(root, 1600, 900));
+        primaryStage.setScene(new Scene(root));
+
+        if(Screen.getPrimary().getDpi() < 120){
+            primaryStage.setHeight(500);
+            primaryStage.setWidth(700);
+            primaryStage.setMaximized(true);
+        } else {
+            primaryStage.setHeight(900);
+            primaryStage.setWidth(1600);
+        }
 
         root.setOnMousePressed(event -> {
             if(!primaryStage.isMaximized()) {
@@ -52,8 +63,9 @@ public class i1Toolz extends Application {
         new FXResizeHelper(primaryStage,RESIZEABLE_PADDING,RESIZEABLE_PADDING);
 
         primaryStage.show();
+
         if(openedProjectFilename != null)
-            MainController.openProject(new File(openedProjectFilename));
+            ((MainController)mainLoader.getController()).openProject(new File(openedProjectFilename));
     }
 
 

@@ -48,7 +48,7 @@
             </LineChart>
             <BorderPane prefHeight="234.0" prefWidth="539.0">
                <center>
-                  <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#selectRow" prefHeight="191.0" prefWidth="882.0" BorderPane.alignment="CENTER">
+                  <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#selectRow" prefHeight="191.0" prefWidth="882.0" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="flag" prefWidth="23.0" />
                       <TableColumn fx:id="id" prefWidth="41.0" text="#" />
@@ -60,6 +60,9 @@
                         <TableColumn fx:id="Y" prefWidth="70.0" text="Y" />
                         <TableColumn fx:id="Z" prefWidth="70.0" text="Z" />
                     </columns>
+                     <BorderPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </BorderPane.margin>
                   </TableView>
                </center>
                <top>
@@ -68,7 +71,7 @@
                         <Insets top="10.0" />
                      </BorderPane.margin>
                      <font>
-                        <Font name="System Bold" size="16.0" />
+                        <Font size="16.0" />
                      </font></Text>
                </top>
             </BorderPane>

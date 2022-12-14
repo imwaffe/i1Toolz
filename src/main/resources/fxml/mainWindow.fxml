@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import org.kordamp.ikonli.javafx.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane prefHeight="770.0" prefWidth="1400.0" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.MainController">
+<BorderPane fx:id="windowPane" prefHeight="770.0" prefWidth="1400.0" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.MainController">
    <left>
       <VBox fx:id="menuPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="220.0" stylesheets="@../css/mainStyle.css" BorderPane.alignment="CENTER">
          <children>
@@ -130,23 +133,28 @@
             </HBox>
          </right>
          <left>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="i1Toolz" textAlignment="CENTER" wrappingWidth="122.056640625" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-            </Text>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="i1Toolz" textAlignment="CENTER" wrappingWidth="122.056640625">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
+                  <Text fx:id="projectName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="New project.i1tz" wrappingWidth="173.5814666748047">
+                     <HBox.margin>
+                        <Insets top="12.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
          </left>
       </BorderPane>
    </top>
    <center>
       <BorderPane fx:id="mainPane" prefHeight="720.0" prefWidth="1367.0" stylesheets="@../css/mainStyle.css">
-         <top>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="i1Toolz" textAlignment="CENTER" wrappingWidth="516.056640625" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="48.0" />
-               </font>
-            </Text>
-         </top>
          <center>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a prototype that's not currently being distributed. If you don't know why you received this copy, please uninstall it and delete the installer. In case you are a tester, please report any bug to luca@armellinluca.com" textAlignment="CENTER" wrappingWidth="353.619140625" BorderPane.alignment="CENTER" />
          </center>

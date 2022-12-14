@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "i1Toolz"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "0.2.1"
 #define MyAppPublisher "Luca Armellin"
 #define MyAppURL "https://www.armellinluca.com/"
 #define MyAppExeName "i1Toolz.exe"
@@ -28,7 +28,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=i1Toolz_0.1.0_Installer
+OutputBaseFilename=i1Toolz_0.2.1_Installer
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern

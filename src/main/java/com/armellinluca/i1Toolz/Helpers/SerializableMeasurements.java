@@ -10,15 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SerializableMeasurements implements Serializable {
+    private static final long serialVersionUID = 9129283098306633232L;
+
     protected ArrayList<SpectralMeasurement> measurements = new ArrayList<>();
     protected transient final HashMap<SpectralMeasurement, SpectralMeasurementCSV> measurementsFile = new HashMap<>();
     protected SpectrumMath spectrumMath = null;
     protected Integer lastId = 1;
 
-    private final HashMap<SpectralMeasurement, Spectrum> spectrums = new HashMap<>();
-    private final HashMap<SpectralMeasurement, Spectrum> originalSpectrums = new HashMap<>();
-    private final HashMap<SpectralMeasurement, String> labels = new HashMap<>();
-    private final HashMap<SpectralMeasurement, Integer> ids = new HashMap<>();
+    protected final HashMap<SpectralMeasurement, Spectrum> spectrums = new HashMap<>();
+    protected final HashMap<SpectralMeasurement, Spectrum> originalSpectrums = new HashMap<>();
+    protected final HashMap<SpectralMeasurement, String> labels = new HashMap<>();
+    protected final HashMap<SpectralMeasurement, Integer> ids = new HashMap<>();
 
     public SerializableMeasurements get(){
         spectrums.clear();

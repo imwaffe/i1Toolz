@@ -9,14 +9,15 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Spectrum implements Cloneable, Serializable {
-
+    private static final long serialVersionUID = 3290529083375931549L;
+    
     public static final char NORMALIZE_DONT_NORMALIZE = 0;
     public static final char NORMALIZE_Y = 1;
     public static final char NORMALIZE_REFLECTANCE = NORMALIZE_DONT_NORMALIZE;
     public static final char NORMALIZE_EMISSIVE = NORMALIZE_Y;
 
     private final TreeMap<Integer,Float> spectralData;
-    private final char normalize;
+    private char normalize;
     private final int wavelengthStep;
 
     private CMF cmfSet = new CMF(CMF.CMF_CIE_XYZ_2006);
@@ -67,6 +68,9 @@ public class Spectrum implements Cloneable, Serializable {
         return converters.get(standardIlluminant);
     }
 
+    public void setNormalize(char normalize){
+        this.normalize = normalize;
+    }
     public char getNormalize(){
         return this.normalize;
     }

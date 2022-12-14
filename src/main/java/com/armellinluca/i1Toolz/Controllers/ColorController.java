@@ -90,7 +90,7 @@ public class ColorController implements Initializable {
         spectrumChart.setAnimated(false);
 
         if(instrument != null) {
-            if (instrument.isReflectiveMode()) {
+            if (instrument.isReflectiveMode() || instrument.isTransmissiveMode()) {
                 instrument.buttonPressedHandlers().add(this::run);
                 takeMeasurementButton.setDisable(false);
             }
@@ -121,6 +121,11 @@ public class ColorController implements Initializable {
             else
                 renderAll(Measurements.get().stream().findFirst().get());
         }
+    }
+
+    @FXML
+    public void takeMeasurement(){
+        run();
     }
 
     private void run() {
