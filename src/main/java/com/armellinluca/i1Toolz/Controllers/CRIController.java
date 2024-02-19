@@ -1,5 +1,6 @@
 package com.armellinluca.i1Toolz.Controllers;
 
+import com.armellinluca.i1Toolz.Clipboard.CRIMeasurementsClipboard;
 import com.armellinluca.i1Toolz.ColorUtils.CRI.CRIMeasurement;
 import com.armellinluca.i1Toolz.ColorUtils.Spectrum.SpectralMeasurement;
 import com.armellinluca.i1Toolz.ColorUtils.Spectrum.Spectrum;
@@ -26,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -63,6 +65,7 @@ public class CRIController implements Initializable {
         criChart.setAnimated(false);
         uvChart.setAnimated(false);
 
+        new CRIMeasurementsClipboard(table);
         table.setEditable(true);
         table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -84,9 +87,9 @@ public class CRIController implements Initializable {
 
         Measurements.addListener(c -> {
             renderAll(currentMeasurement.get());
-            table.getItems().clear();
-            table.getItems().addAll(measurements.getCriMeasurements());
-            table.getSortOrder().add(id);
+            //table.getItems().clear();
+            //table.getItems().addAll(measurements.getCriMeasurements());
+            //table.getSortOrder().add(id);
         });
         currentMeasurement.addListener((observable, oldValue, newValue) -> {
             renderAll(currentMeasurement.get());
@@ -98,7 +101,33 @@ public class CRIController implements Initializable {
             table.getSortOrder().add(id);
         }
 
+        table.getItems().addListener((ListChangeListener<CRIMeasurement>) change -> {
+            while (change.next()){
+                if(change.wasRemoved()) {
+                    change.getRemoved().forEach(r -> Measurements.get().remove(r.getSpectralMeasurement()));
+                    //change.getRemoved().forEach(r -> measurements.remove(r));
+                    if(table.getSelectionModel().getSelectedItem() != null) {
+                        renderAll(table.getSelectionModel().getSelectedItem());
+                    }
+                    else if(table.getItems().stream().findFirst().isPresent()){
+                        renderAll(table.getItems().stream().findFirst().get());
+                    }
+                    else {
+                        measurementDetails.setItems(FXCollections.observableArrayList());
+                        criChart.getData().clear();
+                        uvChart.getData().clear();
+                    }
+                }
+            }
+        });
         Measurements.get().addListener((ListChangeListener<SpectralMeasurement>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(a -> table.getItems().add(measurements.getCriMeasurement(a)));
+                }
+            }
+        });
+        /*Measurements.get().addListener((ListChangeListener<SpectralMeasurement>) c -> {
             while(c.next()){
                 if(c.wasRemoved()){
                     if(measurements.getCriMeasurements().stream().findFirst().isPresent()) {
@@ -111,7 +140,7 @@ public class CRIController implements Initializable {
                     }
                 }
             }
-        });
+        });*/
 
         if(instrument != null) {
             if (instrument.isEmissiveMode()) {
@@ -128,7 +157,9 @@ public class CRIController implements Initializable {
 
     @FXML
     public void deleteMeasurement(){
-        Measurements.get().remove(currentMeasurement.get().getSpectralMeasurement());
+        //Measurements.get().remove(currentMeasurement.get().getSpectralMeasurement());
+        ArrayList<CRIMeasurement> toDelete = new ArrayList<>(table.getSelectionModel().getSelectedItems());
+        toDelete.forEach(m -> table.getItems().remove(m));
     }
 
     @FXML
@@ -142,7 +173,23 @@ public class CRIController implements Initializable {
     private void run() {
         Platform.runLater(()-> {
             Spectrum sp = null;
-            instrument.triggerMeasurement();
+            assert instrument != null;
+            int state = instrument.getDeviceState(instrument.triggerMeasurement());
+            if(state != Instrument.DEVICE_STATE_OK){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                if(state == Instrument.DEVICE_STATE_NOT_CALIBRATED){
+                    alert.setTitle("Not calibrated");
+                    alert.setContentText("Device is not calibrated. Please perform calibration from 'Instrument Settings' panel.");
+                } else if(state == Instrument.DEVICE_STATE_SATURATED){
+                    alert.setTitle("Device saturated");
+                    alert.setContentText("Device is saturated. Please use the ambient light diffuser if present or reduce the luminous flux reaching the instrument.");
+                } else if(state == Instrument.DEVICE_STATE_UNKNOWN_ERROR){
+                    alert.setTitle("Instrument error");
+                    alert.setHeaderText("The instrument returned an unknown error. Please save the project and try closing and reopening the app.");
+                }
+                alert.show();
+                return;
+            }
             TreeMap<Integer, Float> spectrum = instrument.getSpectrum();
 
             char normalize = Spectrum.NORMALIZE_DONT_NORMALIZE;

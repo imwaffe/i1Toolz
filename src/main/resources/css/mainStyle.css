@@ -18,6 +18,10 @@
     /*-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 5, 5 );*/
 }
 
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
 #currentPane{
     -fx-background-color: #1E2030;
     -fx-text-fill: #dddddd;

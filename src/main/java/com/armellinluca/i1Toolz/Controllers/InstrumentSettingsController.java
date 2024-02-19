@@ -78,7 +78,7 @@ public class InstrumentSettingsController implements Initializable {
         items.add("Last calibrated: "+calTime);
         instrumentInfo.setItems(items);
 
-        integrationTime.setText(Float.toString(Float.parseFloat(instrument.getOption(Instrument.INTEGRATION_TIME))*1000));
+        integrationTime.setText(Float.toString(Float.parseFloat(instrument.getOption(Instrument.INTEGRATION_TIME).equals("") ?"-1":instrument.getOption(Instrument.INTEGRATION_TIME))*1000));
         String measModes = "Transmission;"+instrument.getOption(Instrument.AVAILABLE_MEASUREMENT_MODES);
         measurementMode.setItems(FXCollections.observableArrayList(new ArrayList<>(Arrays.asList(measModes.split(";")))));
         measurementMode.getSelectionModel().select(instrument.getOption(Instrument.MEASUREMENT_MODE));

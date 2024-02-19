@@ -16,7 +16,7 @@ public class AverageSpectrums {
         int size = measurements.size();
         StringBuilder label = new StringBuilder("Avg(");
         measurements.forEach(m -> {
-            if(InstrumentSingleton.getInstrument().isReflectiveMode(m.getMeasurementMode()))
+            if(InstrumentSingleton.getInstrument() != null && InstrumentSingleton.getInstrument().isReflectiveMode(m.getMeasurementMode()))
                 isEmissive.set(false);
             label.append(m.getId().getValue()).append(",");
             m.getOriginalSpectrum().getSpectralData().forEach((wavelength, value) -> {

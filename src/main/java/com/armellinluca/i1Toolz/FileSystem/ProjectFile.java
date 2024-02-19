@@ -1,4 +1,4 @@
-package com.armellinluca.i1Toolz.FileSystem;
+package com.armellinluca.i1Toolz.FileSystem; 
 
 import com.armellinluca.i1Toolz.Helpers.BackwardCompatibleInputStream;
 import com.armellinluca.i1Toolz.Helpers.SerializableMeasurements;
@@ -30,19 +30,16 @@ public class ProjectFile {
 
     public static boolean hasChanged(File projectFile, SerializableMeasurements currentMeasurements){
         if(currentMeasurements == null) {
-            System.out.println("1");
             return false;
         }
         SerializableMeasurementsDecorator decoratedMeasurements = new SerializableMeasurementsDecorator(currentMeasurements.get());
         if(decoratedMeasurements.isEmpty())
             return false;
         if(projectFile == null) {
-            System.out.println("2");
             return true;
         }
         SerializableMeasurements savedMeasurements = loadFromFile(projectFile).get();
         assert savedMeasurements != null;
-        System.out.println("3");
         return !decoratedMeasurements.equals(savedMeasurements);
     }
 

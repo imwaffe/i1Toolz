@@ -1,5 +1,7 @@
 package com.armellinluca.i1Toolz.Controllers;
 
+import com.armellinluca.CustomJFX.TextNumber.TextNumber;
+import com.armellinluca.i1Toolz.Clipboard.SpectralMeasurementsClipboard;
 import com.armellinluca.i1Toolz.ColorUtils.ColorMath.DeltaE;
 import com.armellinluca.i1Toolz.ColorUtils.ColorMath.XYZ2RGB;
 import com.armellinluca.i1Toolz.ColorUtils.Spectrum.SpectralMeasurement;
@@ -9,7 +11,6 @@ import com.armellinluca.i1Toolz.ColorUtils.StandardIlluminant;
 import com.armellinluca.i1Toolz.EyeOne.Instrument;
 import com.armellinluca.i1Toolz.EyeOne.InstrumentSingleton;
 import com.armellinluca.i1Toolz.Helpers.Measurements;
-import com.armellinluca.i1Toolz.Helpers.TextNumber;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -59,6 +61,8 @@ public class ColorController implements Initializable {
     private ComboBox<String> rgbSpace;
     @FXML
     private LineChart<String,Number> spectrumChart;
+    @FXML
+    private ScatterChart<Number, Number> xyChart, abChart;
 
     private final Instrument instrument = InstrumentSingleton.getInstrument();
     private final double[][] srgbMatrix = {{0.4124564, 0.3575761, 0.1804375},{0.2126729, 0.7151522, 0.0721750},{0.0193339, 0.1191920, 0.9503041}};
@@ -83,7 +87,8 @@ public class ColorController implements Initializable {
         label.setCellFactory(TextFieldTableCell.forTableColumn());
         label.setEditable(true);
         label.setCellValueFactory(cellData -> cellData.getValue().getLabel());
-        
+
+        new SpectralMeasurementsClipboard(table);
         table.getItems().clear();
         table.getItems().addAll(measurements);
 
@@ -96,7 +101,7 @@ public class ColorController implements Initializable {
             }
         }
 
-        measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
+        /*measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
             while(c.next()) {
                 if (c.wasRemoved()) {
                     if(Measurements.get().stream().findFirst().isPresent()) {
@@ -109,6 +114,29 @@ public class ColorController implements Initializable {
             }
             table.getItems().clear();
             table.getItems().addAll(measurements);
+        });*/
+        table.getItems().addListener((ListChangeListener<SpectralMeasurement>) change -> {
+            while (change.next()){
+                if(change.wasRemoved()) {
+                    change.getRemoved().forEach(r -> Measurements.get().remove(r));
+                    if(table.getSelectionModel().getSelectedItem() != null) {
+                        renderAll(table.getSelectionModel().getSelectedItem());
+                    }
+                    else if(table.getItems().stream().findFirst().isPresent()){
+                        renderAll(table.getItems().stream().findFirst().get());
+                    }
+                    else {
+                        /* clear */
+                    }
+                }
+            }
+        });
+        measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(a -> table.getItems().add(a));
+                }
+            }
         });
         //currentMeasurement.addListener((observable, oldValue, newValue) -> renderAll(measurements));
 
@@ -131,7 +159,23 @@ public class ColorController implements Initializable {
     private void run() {
         Platform.runLater(()-> {
             Spectrum sp = null;
-            instrument.triggerMeasurement();
+            assert instrument != null;
+            int state = instrument.getDeviceState(instrument.triggerMeasurement());
+            if(state != Instrument.DEVICE_STATE_OK){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                if(state == Instrument.DEVICE_STATE_NOT_CALIBRATED){
+                    alert.setTitle("Not calibrated");
+                    alert.setContentText("Device is not calibrated. Please perform calibration from 'Instrument Settings' panel.");
+                } else if(state == Instrument.DEVICE_STATE_SATURATED){
+                    alert.setTitle("Device saturated");
+                    alert.setContentText("Device is saturated. Please use the ambient light diffuser if present or reduce the luminous flux reaching the instrument.");
+                } else if(state == Instrument.DEVICE_STATE_UNKNOWN_ERROR){
+                    alert.setTitle("Instrument error");
+                    alert.setHeaderText("The instrument returned an unknown error. Please save the project and try closing and reopening the app.");
+                }
+                alert.show();
+                return;
+            }
             TreeMap<Integer, Float> spectrum = instrument.getSpectrum();
 
             char normalize = Spectrum.NORMALIZE_REFLECTANCE;
@@ -184,7 +228,7 @@ public class ColorController implements Initializable {
     @FXML
     public void deleteMeasurement(){
         ArrayList<SpectralMeasurement> toDelete = new ArrayList<>(table.getSelectionModel().getSelectedItems());
-        toDelete.forEach(m -> Measurements.get().remove(m));
+        toDelete.forEach(m -> table.getItems().remove(m));
     }
 
     @FXML

@@ -1,0 +1,14 @@
+.menu-row{
+    -fx-background-color: transparent;
+    -fx-padding: 10 20 10 20;
+    -fx-border-color:  #ffffff06 #000 #000000DD #000;
+    -fx-border-width: 2 0 1 0;
+    -fx-pref-height: 70;
+    -fx-max-height: 70;
+    -fx-min-height: 70;
+    -fx-font-size:1.1em;
+}
+
+.menu-row:hover{
+    -fx-background-color: #FFFFFF06;
+}

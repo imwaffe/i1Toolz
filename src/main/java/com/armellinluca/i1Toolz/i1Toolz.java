@@ -24,7 +24,7 @@ public class i1Toolz extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/fxml/mainWindow.fxml"));
         Parent root = mainLoader.load();
-        primaryStage.setTitle("com/armellin/i1Toolz/i1Toolz");
+        primaryStage.setTitle("i1Toolz");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-16.png")));
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-32.png")));
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon-64.png")));
@@ -34,9 +34,9 @@ public class i1Toolz extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(new Scene(root));
 
-        if(Screen.getPrimary().getDpi() < 120){
-            primaryStage.setHeight(500);
-            primaryStage.setWidth(700);
+        if(Screen.getPrimary().getBounds().getWidth()/Screen.getPrimary().getDpi() < 12){
+            primaryStage.setHeight(Screen.getPrimary().getBounds().getHeight()*0.9);
+            primaryStage.setWidth(Screen.getPrimary().getBounds().getWidth()*0.9);
             primaryStage.setMaximized(true);
         } else {
             primaryStage.setHeight(900);

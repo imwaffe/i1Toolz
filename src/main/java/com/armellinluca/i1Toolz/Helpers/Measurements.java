@@ -34,10 +34,12 @@ public class Measurements {
             });
             measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
                 while(c.next()){
-                    if(c.wasAdded())
+                    if(c.wasAdded()) {
                         serializableMeasurements.measurements.addAll(c.getAddedSubList());
-                    if(c.wasRemoved())
-                        c.getRemoved().forEach(m->serializableMeasurements.measurements.remove(m));
+                    }
+                    if(c.wasRemoved()) {
+                        c.getRemoved().forEach(m -> serializableMeasurements.measurements.remove(m));
+                    }
                 }
             });
         }
@@ -46,6 +48,10 @@ public class Measurements {
 
     public static SerializableMeasurements getSerializable(){
         return serializableMeasurements;
+    }
+
+    public static Integer getLastID(){
+        return serializableMeasurements.lastId;
     }
 
     public static List<SpectralMeasurement> add(SpectralMeasurement measurement){
@@ -110,7 +116,16 @@ public class Measurements {
 
     public static void saveMeasurements(File directory){
         exportDirectory.set(directory);
-        measurements.forEach(m -> serializableMeasurements.measurementsFile.put(m, new SpectralMeasurementCSV(m, exportDirectory.get())));
+        System.out.println("IS NULL before init: "+(serializableMeasurements.measurementsFile==null));
+        if(serializableMeasurements.measurementsFile == null) {
+            serializableMeasurements.initMeasurementsFile();
+            System.out.println("inside");
+        }
+        System.out.println("IS NULL after init: "+(serializableMeasurements.measurementsFile==null));
+        measurements.forEach(m -> {
+            System.out.println("IS NULL: "+(serializableMeasurements.measurementsFile==null));
+            serializableMeasurements.measurementsFile.put(m, new SpectralMeasurementCSV(m, exportDirectory.get()));
+        });
         measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
             while (c.next())
                 c.getAddedSubList().forEach(m->serializableMeasurements.measurementsFile.put(m,new SpectralMeasurementCSV(m, exportDirectory.get())));
@@ -123,8 +138,17 @@ public class Measurements {
     }
 
     public static void deserialize(SerializableMeasurements serializableMeasurements){
-        get().clear();
-        get().addAll(serializableMeasurements.measurements);
-        Measurements.serializableMeasurements = serializableMeasurements;
+        deserialize(serializableMeasurements, false);
+    }
+
+    public static void deserialize(SerializableMeasurements m, boolean append){
+        if(append) {
+            Measurements.serializableMeasurements.lastId += m.measurements.size();
+            get().addAll(m.measurements);
+        } else {
+            get().clear();
+            get().addAll(m.measurements);
+            Measurements.serializableMeasurements = m;
+        }
     }
 }

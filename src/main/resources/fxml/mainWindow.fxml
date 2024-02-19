@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="windowPane" prefHeight="770.0" prefWidth="1400.0" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.MainController">
+<BorderPane fx:id="windowPane" prefHeight="770.0" prefWidth="1400.0" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.MainController">
    <left>
       <VBox fx:id="menuPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="220.0" stylesheets="@../css/mainStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="265.0" prefWidth="220.0">
+            <VBox prefHeight="480.0" prefWidth="220.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#menuButtonCRI" prefHeight="44.0" prefWidth="258.0" styleClass="menuButton" text="CRI / Ra">
                      <graphic>
@@ -36,9 +33,75 @@
                         <FontIcon iconColor="WHITE" iconLiteral="fa-bar-chart" iconSize="21" textAlignment="CENTER" wrappingWidth="33.0" />
                      </graphic>
                   </Button>
+                  <Button disable="true" mnemonicParsing="false" onAction="#menuButtonRTA" prefHeight="44.0" prefWidth="258.0" styleClass="menuButton" text="Real Time Analyzer">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-clock-o" iconSize="21" textAlignment="CENTER" wrappingWidth="33.0" />
+                     </graphic>
+                  </Button>
                </children>
             </VBox>
-            <VBox alignment="BOTTOM_LEFT" prefHeight="119.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
+            <VBox prefHeight="272.0" prefWidth="220.0" style="-fx-background-color: #ffffff10;" VBox.vgrow="NEVER">
+               <children>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Automate" wrappingWidth="106.056640625">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="AutomateRemainingAcquisitions" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="--\∞" textAlignment="RIGHT" wrappingWidth="79.6494140625" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="automateStartButton" mnemonicParsing="false" onAction="#automateStart" prefHeight="44.0" prefWidth="258.0" styleClass="menuButton" text="Start">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-play" iconSize="21" textAlignment="CENTER" wrappingWidth="33.0" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="automateStopButton" disable="true" mnemonicParsing="false" onAction="#automateStop" prefHeight="44.0" prefWidth="258.0" styleClass="menuButton" text="Stop">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-stop" iconSize="21" textAlignment="CENTER" wrappingWidth="33.0" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="automatePauseButton" disable="true" mnemonicParsing="false" onAction="#automatePause" prefHeight="44.0" prefWidth="258.0" styleClass="menuButton" text="Pause">
+                     <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fa-pause" iconSize="21" textAlignment="CENTER" wrappingWidth="33.0" />
+                     </graphic>
+                  </Button>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Interval (ms):" textAlignment="RIGHT" wrappingWidth="79.6494140625">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TextField fx:id="automateInterval" prefHeight="26.0" prefWidth="118.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Acquisitions:" textAlignment="RIGHT" wrappingWidth="79.6494140625">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TextField fx:id="automateAcquisitions" prefHeight="26.0" prefWidth="118.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <CheckBox fx:id="automateAcquisitionsInfiniteCB" alignment="CENTER" graphicTextGap="1.0" mnemonicParsing="false" text="∞" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="390.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button defaultButton="true" mnemonicParsing="false" onMouseClicked="#menuButtonInstrumentSettings" prefHeight="44.0" prefWidth="220.0" styleClass="menuButton" text="Instrument settings">
                      <graphic>
@@ -143,7 +206,7 @@
                         <Insets />
                      </HBox.margin>
                   </Text>
-                  <Text fx:id="projectName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="New project.i1tz" wrappingWidth="173.5814666748047">
+                  <Text fx:id="projectName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="New project.i1tz" wrappingWidth="525.5814666748047">
                      <HBox.margin>
                         <Insets top="12.0" />
                      </HBox.margin>
@@ -156,7 +219,7 @@
    <center>
       <BorderPane fx:id="mainPane" prefHeight="720.0" prefWidth="1367.0" stylesheets="@../css/mainStyle.css">
          <center>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a prototype that's not currently being distributed. If you don't know why you received this copy, please uninstall it and delete the installer. In case you are a tester, please report any bug to luca@armellinluca.com" textAlignment="CENTER" wrappingWidth="353.619140625" BorderPane.alignment="CENTER" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="This is only a prototype distributed under the GNU GENERAL PUBLIC LICENSE Version 2 of June 1991, use it at your own risk. Feel free to contact me at luca@armellinluca.com or visit www.armellinluca.com. GitHub: github.com/imwaffe" textAlignment="CENTER" wrappingWidth="353.619140625" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>

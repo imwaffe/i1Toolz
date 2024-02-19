@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "i1Toolz"
-#define MyAppVersion "0.2.1"
+#define MyAppVersion "0.3.2"
 #define MyAppPublisher "Luca Armellin"
 #define MyAppURL "https://www.armellinluca.com/"
 #define MyAppExeName "i1Toolz.exe"
@@ -14,7 +14,8 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{9E2A8B2D-55A4-4963-877E-864D10D22BBF}
+; ACTUAL AppId={{9E2A8B2D-55A4-4963-877E-864D10D22BBF}
+AppId = {{DC673D0D-B071-4D6F-9C3D-99C342F1B8A6}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -28,10 +29,11 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputBaseFilename=i1Toolz_0.2.1_Installer
+OutputBaseFilename=i1Toolz_0.3.2_Installer
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+LicenseFile = "installer\license.txt"
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -40,15 +42,15 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\i1Toolz.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140_2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\packager.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\users\lucaa\Documents\JAVA\i1Toolz\dll\*"; DestDir: "{sys}"; Flags: 32bit 
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\i1Toolz.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\msvcp140_2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\packager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\dll\*"; DestDir: "{sys}"; Flags: 32bit 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
@@ -65,3 +67,8 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilen
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+;[Code]
+;procedure InitializeWizard();
+;begin
+;  authentication_form_CreatePage(wpLicense);
+;end;

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #1E2030;" styleClass="currentPane" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.armellinluca.i1Toolz.Controllers.SpectrumController">
+   <center>
+      <GridPane prefHeight="720.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="989.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="400.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="235.0" minHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <LineChart fx:id="chart" animated="false" createSymbols="false" prefHeight="521.0" prefWidth="940.0" stylesheets="@../css/lineChart.css">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </GridPane.margin>
+            </LineChart>
+            <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="223.0" prefWidth="290.0" style="-fx-background-color: #ffffff09; -fx-background-radius: 20px; -fx-padding: 10px;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+               <top>
+                  <BorderPane BorderPane.alignment="CENTER">
+                     <top>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Persistence" textAlignment="CENTER" wrappingWidth="69.8359375" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </top>
+                  </BorderPane>
+               </top>
+               <bottom>
+                  <VBox id="mathReferenceGroup" fx:id="referenceMathBox" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="179.0" spacing="12.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <RadioButton fx:id="SubtractReferenceFromSpectrum" mnemonicParsing="false" prefHeight="17.0" prefWidth="138.0" selected="true" text="None">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="referenceMathRadioGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="SubtractSpectrumFromReference" mnemonicParsing="false" prefHeight="17.0" prefWidth="138.0" text="Infinite" toggleGroup="$referenceMathRadioGroup" />
+                        <RadioButton fx:id="SpectrumsAbsoluteDifference" mnemonicParsing="false" prefHeight="17.0" prefWidth="178.0" text="10 measurements" toggleGroup="$referenceMathRadioGroup" />
+                        <RadioButton fx:id="AddSpectrums" mnemonicParsing="false" prefHeight="17.0" prefWidth="138.0" text="Custom..." toggleGroup="$referenceMathRadioGroup" />
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <TextField alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="195.0" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="measurements">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </bottom>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <center>
+                  <Button fx:id="takeMeasurementButton" disable="true" mnemonicParsing="false" onMouseClicked="#takeMeasurement" prefHeight="54.0" prefWidth="186.0" text="RTA Start" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

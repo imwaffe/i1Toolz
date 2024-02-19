@@ -10,6 +10,8 @@ import javafx.util.Duration;
 
 public class ResizeHover<T> {
     private Boolean enabled = false;
+    Timeline onEnter;
+    Timeline onLeave;
 
     public ResizeHover(Pane pane, WritableValue<T> target, T enterSize, double milliseconds){
         this(pane, target, enterSize, target.getValue(), milliseconds);
@@ -17,8 +19,8 @@ public class ResizeHover<T> {
 
     public ResizeHover(Pane pane, WritableValue<T> target, T leaveSize, T enterSize, double milliseconds){
         Duration animationDuration = new Duration(milliseconds);
-        Timeline onEnter = new Timeline(new KeyFrame(animationDuration, new KeyValue(target, enterSize, Interpolator.EASE_BOTH)));
-        Timeline onLeave = new Timeline(new KeyFrame(animationDuration, new KeyValue(target, leaveSize, Interpolator.EASE_BOTH)));
+        onEnter = new Timeline(new KeyFrame(animationDuration, new KeyValue(target, enterSize, Interpolator.EASE_BOTH)));
+        onLeave = new Timeline(new KeyFrame(animationDuration, new KeyValue(target, leaveSize, Interpolator.EASE_BOTH)));
         pane.hoverProperty().addListener((observableValue, oldValue, newValue) -> {
             if(this.isEnabled()) {
                 if (newValue) {
@@ -34,9 +36,11 @@ public class ResizeHover<T> {
 
     public void enable(){
         this.enabled = true;
+        onLeave.play();
     }
     public void disable(){
         this.enabled = false;
+        onEnter.play();
     }
     public boolean isEnabled(){
         return enabled;

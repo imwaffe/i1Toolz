@@ -1,12 +1,12 @@
 package com.armellinluca.i1Toolz.Controllers;
 
+import com.armellinluca.i1Toolz.Clipboard.SpectralMeasurementsClipboard;
 import com.armellinluca.i1Toolz.ColorUtils.Spectrum.SpectralMeasurement;
 import com.armellinluca.i1Toolz.ColorUtils.Spectrum.Spectrum;
-import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.*;
-import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.SpectrumMath;
 import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.AverageSpectrums;
 import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.GetOperatorByString;
 import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.IdentitySpectrum;
+import com.armellinluca.i1Toolz.ColorUtils.SpectrumMath.SpectrumMath;
 import com.armellinluca.i1Toolz.ColorUtils.StandardIlluminant;
 import com.armellinluca.i1Toolz.EyeOne.Instrument;
 import com.armellinluca.i1Toolz.EyeOne.InstrumentSingleton;
@@ -19,13 +19,21 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -79,12 +87,34 @@ public class SpectrumController implements Initializable {
     static transient ObjectProperty<SpectralMeasurement> referenceSpectrum = new SimpleObjectProperty<>();
     static int checkedMathRadioIndex = -1;
 
+    private final MenuItem copyChart = new MenuItem("Copy chart");
+    final ContextMenu copyChartMenu = new ContextMenu(copyChart);
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         measurements = Measurements.get();
+        System.out.println(Measurements.get().size());
 
         chart.setAnimated(false);
+        chart.setOnMouseClicked(event -> {
+            if (MouseButton.SECONDARY.equals(event.getButton())) {
+                copyChartMenu.show(mainPane, event.getScreenX(), event.getScreenY());
+            } else {
+                copyChartMenu.hide();
+            }
+        });
+        copyChart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                WritableImage image = chart.snapshot(new SnapshotParameters(), null);
+                ClipboardContent cc = new ClipboardContent();
+                cc.putImage(image);
+                Clipboard.getSystemClipboard().setContent(cc);
+            }
+        });
+
         table.setEditable(true);
+        new SpectralMeasurementsClipboard(table);
+
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         X.setCellValueFactory(cellData -> cellData.getValue().getX());
         Y.setCellValueFactory(cellData -> cellData.getValue().getY());
@@ -110,7 +140,7 @@ public class SpectrumController implements Initializable {
         table.getItems().clear();
         table.getItems().addAll(measurements);
 
-        measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
+        /*measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
             while(c.next()) {
                 if (c.wasRemoved()) {
                     if(Measurements.get().stream().findFirst().isPresent()) {
@@ -124,7 +154,7 @@ public class SpectrumController implements Initializable {
             }
             table.getItems().clear();
             table.getItems().addAll(measurements);
-        });
+        });*/
         currentMeasurement.addListener((observable, oldValue, newValue) -> renderAll(measurements));
 
         if(Measurements.get().size() > 0){
@@ -158,6 +188,33 @@ public class SpectrumController implements Initializable {
             return row;
         });
 
+        table.getItems().addListener((ListChangeListener<SpectralMeasurement>) change -> {
+            while (change.next()){
+                if(change.wasRemoved()) {
+                    System.out.println("Removed elements #: "+change.getRemovedSize());
+                    change.getRemoved().forEach(r -> Measurements.get().remove(r));
+                    if(!table.getSelectionModel().getSelectedItems().isEmpty()) {
+                        renderAll(table.getSelectionModel().getSelectedItems());
+                    }
+                    else if(table.getItems().stream().findFirst().isPresent()){
+                        renderAll(table.getItems().stream().findFirst().get());
+                    }
+                    else {
+                        measurementDetails.setItems(FXCollections.observableArrayList());
+                        chart.getData().clear();
+                    }
+                }
+            }
+        });
+        measurements.addListener((ListChangeListener<SpectralMeasurement>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    //renderAll(c.getAddedSubList().get(0));
+                    c.getAddedSubList().forEach(a -> table.getItems().add(a));
+                }
+            }
+        });
+
         Measurements.exportDirectoryProperty().addListener((observable, oldValue, newValue) -> {
             openExportDirectoryButton.setDisable(newValue == null);
             //saveMeasurement.setDisable(newValue != null);
@@ -179,7 +236,7 @@ public class SpectrumController implements Initializable {
     @FXML
     public void deleteMeasurement(){
         ArrayList<SpectralMeasurement> toDelete = new ArrayList<>(table.getSelectionModel().getSelectedItems());
-        toDelete.forEach(m -> Measurements.get().remove(m));
+        toDelete.forEach(m -> table.getItems().remove(m));
     }
 
     @FXML
@@ -248,7 +305,23 @@ public class SpectrumController implements Initializable {
 
     private void run() {
         Platform.runLater(()-> {
-            instrument.triggerMeasurement();
+            assert instrument != null;
+            int state = instrument.getDeviceState(instrument.triggerMeasurement());
+            if(state != Instrument.DEVICE_STATE_OK){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                if(state == Instrument.DEVICE_STATE_NOT_CALIBRATED){
+                    alert.setTitle("Not calibrated");
+                    alert.setContentText("Device is not calibrated. Please perform calibration from 'Instrument Settings' panel.");
+                } else if(state == Instrument.DEVICE_STATE_SATURATED){
+                    alert.setTitle("Device saturated");
+                    alert.setContentText("Device is saturated. Please use the ambient light diffuser if present or reduce the luminous flux reaching the instrument.");
+                } else if(state == Instrument.DEVICE_STATE_UNKNOWN_ERROR){
+                    alert.setTitle("Instrument error");
+                    alert.setHeaderText("The instrument returned an unknown error. Please save the project and try closing and reopening the app.");
+                }
+                alert.show();
+                return;
+            }
             TreeMap<Integer, Float> spectrum = instrument.getSpectrum();
             Spectrum sp;
             if(instrument.isEmissiveMode())

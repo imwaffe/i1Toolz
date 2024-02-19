@@ -13,7 +13,7 @@ public class SerializableMeasurements implements Serializable {
     private static final long serialVersionUID = 9129283098306633232L;
 
     protected ArrayList<SpectralMeasurement> measurements = new ArrayList<>();
-    protected transient final HashMap<SpectralMeasurement, SpectralMeasurementCSV> measurementsFile = new HashMap<>();
+    protected transient HashMap<SpectralMeasurement, SpectralMeasurementCSV> measurementsFile = new HashMap<>();
     protected SpectrumMath spectrumMath = null;
     protected Integer lastId = 1;
 
@@ -22,7 +22,20 @@ public class SerializableMeasurements implements Serializable {
     protected final HashMap<SpectralMeasurement, String> labels = new HashMap<>();
     protected final HashMap<SpectralMeasurement, Integer> ids = new HashMap<>();
 
+    private transient Integer startID = null;
+    private transient String prependString = "";
+
     public SerializableMeasurements get(){
+        return get(this.measurements);
+    }
+
+    public void initMeasurementsFile(){
+        measurementsFile = new HashMap<>();
+        System.out.println("IS NULL inside: "+(this.measurementsFile == null));
+    }
+
+    public SerializableMeasurements get(ArrayList<SpectralMeasurement> measurements){
+        this.measurements = measurements;
         spectrums.clear();
         originalSpectrums.clear();
         labels.clear();
@@ -36,12 +49,29 @@ public class SerializableMeasurements implements Serializable {
         return this;
     }
 
+    public void setStartID(Integer startID){
+        this.startID = startID;
+    }
+
+    public void prependString(String prependString){
+        this.prependString = prependString;
+    }
+
     public void load(){
+        String prependString = this.prependString==null?"":this.prependString;
         measurements.forEach(m->{
             m.spectrumProperty(spectrums.getOrDefault(m, null));
             m.originalSpectrumProperty(originalSpectrums.getOrDefault(m, null));
-            m.labelProperty(labels.getOrDefault(m, null));
-            m.idProperty(ids.getOrDefault(m, null));
+            m.labelProperty(prependString+labels.getOrDefault(m, null));
+            if(startID == null)
+                m.idProperty(ids.getOrDefault(m, null));
+            else
+                m.idProperty(startID++);
         });
+    }
+
+    public SerializableMeasurements append(SerializableMeasurements m){
+        measurements.addAll(m.measurements);
+        return this;
     }
 }

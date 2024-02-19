@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.armellinluca.i1Toolz.Helpers.*?>
+<?import com.armellinluca.CustomJFX.TextNumber.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
@@ -790,7 +790,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button fx:id="deleteMeasurement" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Delete" GridPane.halignment="CENTER" />
+                        <Button fx:id="deleteMeasurement" onMouseClicked="#deleteMeasurement" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Delete" GridPane.halignment="CENTER" />
                         <Button id="setReferenceButton" fx:id="setReference" mnemonicParsing="false" onMouseClicked="#setReferenceMeasurement" prefHeight="27.0" prefWidth="116.0" text="Set reference" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                         <ComboBox fx:id="rgbSpace" prefHeight="29.0" prefWidth="216.0" promptText="D65" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                         <ComboBox fx:id="rgbSpace1" layoutX="205.0" layoutY="211.0" prefHeight="29.0" prefWidth="216.0" promptText="sRGB" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />

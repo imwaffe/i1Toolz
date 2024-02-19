@@ -1,14 +1,14 @@
 package com.armellinluca.i1Toolz.Controllers;
 
+import com.armellinluca.i1Toolz.ColorUtils.Spectrum.SpectralMeasurement;
+import com.armellinluca.i1Toolz.ColorUtils.Spectrum.Spectrum;
+import com.armellinluca.i1Toolz.ColorUtils.StandardIlluminant;
+import com.armellinluca.i1Toolz.EyeOne.Instrument;
 import com.armellinluca.i1Toolz.EyeOne.InstrumentSingleton;
 import com.armellinluca.i1Toolz.FileSystem.ProjectFile;
 import com.armellinluca.i1Toolz.Helpers.Measurements;
 import com.armellinluca.i1Toolz.Helpers.ResizeHover;
 import com.armellinluca.i1Toolz.Helpers.SerializableMeasurements;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,29 +16,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
     private static File currentProject = null;
     private Alert saveDialog;
     public static final ButtonType BUTTON_SAVE = new ButtonType("Save");
     public static final ButtonType BUTTON_DONT_SAVE = new ButtonType("Don't save");
+
+    private Timer automationTimer = null;
 
     @FXML
     private BorderPane windowPane;
@@ -47,7 +46,13 @@ public class MainController implements Initializable {
     @FXML
     private VBox menuPane;
     @FXML
-    private Text projectName;
+    private Text projectName, AutomateRemainingAcquisitions;
+    @FXML
+    private Button automateStartButton, automateStopButton, automatePauseButton;
+    @FXML
+    private TextField automateInterval, automateAcquisitions;
+    @FXML
+    private CheckBox automateAcquisitionsInfiniteCB;
 
     public void checkIfProjectSavedBeforeExecuting(Runnable r){
         if(ProjectFile.hasChanged(currentProject, Measurements.getSerializable()))
@@ -67,25 +72,25 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.setProperty("prism.allowhidpi", "true");
 
-        double originalMenuPaneWidth = menuPane.getPrefWidth();
         double shrinkMenuPaneWidth = 47;
         ResizeHover r = new ResizeHover(menuPane, menuPane.prefWidthProperty(), shrinkMenuPaneWidth, 100);
 
-        if(Screen.getPrimary().getDpi() < 120){
-            menuPane.setPrefWidth(shrinkMenuPaneWidth);
-            r.enable();
-        } else {
-            windowPane.widthProperty().addListener((observable, oldWidth, newWidth) -> {
-                if(newWidth.intValue() < 1400) {
-                    menuPane.setPrefWidth(shrinkMenuPaneWidth);
-                    r.enable();
-                }
-                else {
-                    r.disable();
-                    menuPane.setPrefWidth(originalMenuPaneWidth);
-                }
-            });
-        }
+        windowPane.widthProperty().addListener((observable, oldWidth, newWidth) -> {
+            if(newWidth.intValue()/Screen.getPrimary().getDpi() < 13) {
+                r.enable();
+            }
+            else {
+                r.disable();
+            }
+        });
+
+        automateAcquisitionsInfiniteCB.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue) {
+                automateAcquisitions.setDisable(true);
+            } else {
+                automateAcquisitions.setDisable(false);
+            }
+        });
 
         saveDialog = new Alert(Alert.AlertType.CONFIRMATION);
         saveDialog.setTitle("Changes not saved");
@@ -109,6 +114,13 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    public void menuButtonRTA() throws IOException {
+        if(InstrumentSingleton.getInstrument() != null)
+            InstrumentSingleton.getInstrument().buttonPressedHandlers().clearAll();
+        mainPane.setCenter(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/rtaPane.fxml"))));
+    }
+
+    @FXML
     public void menuButtonCRI() throws IOException {
         if(InstrumentSingleton.getInstrument() != null)
             InstrumentSingleton.getInstrument().buttonPressedHandlers().clearAll();
@@ -121,6 +133,77 @@ public class MainController implements Initializable {
             InstrumentSingleton.getInstrument().buttonPressedHandlers().clearAll();
         mainPane.setCenter(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/colorPane.fxml"))));
     }
+
+    @FXML
+    public void automateStart(){
+        final Instrument instrument = InstrumentSingleton.getInstrument();
+        Integer interval;
+        final Integer[] reps = {null};
+        try {
+            interval = Integer.parseInt(automateInterval.getText());
+            if(!automateAcquisitionsInfiniteCB.isSelected())
+                reps[0] = Integer.parseInt(automateAcquisitions.getText());
+        } catch (NumberFormatException ignored) {
+            return;
+        }
+
+        automateStartButton.setDisable(true);
+        automateStopButton.setDisable(false);
+
+        automationTimer = new Timer();
+        automationTimer.schedule(new TimerTask() {
+            public void run() {
+
+                assert instrument != null;
+                int state = instrument.getDeviceState(instrument.triggerMeasurement());
+                if(state != Instrument.DEVICE_STATE_OK){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    if(state == Instrument.DEVICE_STATE_NOT_CALIBRATED){
+                        alert.setTitle("Not calibrated");
+                        alert.setContentText("Device is not calibrated. Please perform calibration from 'Instrument Settings' panel.");
+                        automationTimer.cancel();
+                    } else if(state == Instrument.DEVICE_STATE_SATURATED){
+                        alert.setTitle("Device saturated");
+                        alert.setContentText("Device is saturated. Please use the ambient light diffuser if present or reduce the luminous flux reaching the instrument.");
+                        automationTimer.cancel(); // PAUSE INSTEAD
+                    } else if(state == Instrument.DEVICE_STATE_UNKNOWN_ERROR){
+                        alert.setTitle("Instrument error");
+                        alert.setHeaderText("The instrument returned an unknown error. Please save the project and try closing and reopening the app.");
+                        automationTimer.cancel();
+                    }
+                    alert.show();
+                    return;
+                }
+                TreeMap<Integer, Float> spectrum = instrument.getSpectrum();
+                Spectrum sp;
+                if(instrument.isEmissiveMode())
+                    sp = new Spectrum(spectrum, Spectrum.NORMALIZE_EMISSIVE);
+                else
+                    sp = new Spectrum(spectrum, Spectrum.NORMALIZE_REFLECTANCE, StandardIlluminant.getD65());
+                SpectralMeasurement measurement = new SpectralMeasurement(sp,StandardIlluminant.getD65());
+                Measurements.add(measurement);
+
+                if(reps[0] != null) {
+                    reps[0]--;
+                    if(reps[0] <= 0) {
+                        automationTimer.cancel();
+                        automateStartButton.setDisable(false);
+                        automateStopButton.setDisable(true);
+                    }
+                }
+            }
+        }, 0, interval);
+    }
+
+    @FXML
+    public void automateStop(){
+        automationTimer.cancel();
+        automateStartButton.setDisable(false);
+        automateStopButton.setDisable(true);
+    }
+
+    @FXML
+    public void automatePause(){}
 
     @FXML
     public void closeApp(){
