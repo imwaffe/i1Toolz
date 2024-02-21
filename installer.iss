@@ -50,7 +50,7 @@ Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1T
 Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\packager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\out\artifacts\i1Toolz\bundles\i1Toolz\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\dll\*"; DestDir: "{sys}"; Flags: 32bit 
+Source: "C:\users\lucaa\Documents\JAVA\i1Toolz\dll\*"; DestDir: "{sys}"; Flags: 32bit
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
@@ -65,10 +65,68 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppIcoName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent; Check: EyeOneDllExists          
+;Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
-;[Code]
-;procedure InitializeWizard();
-;begin
-;  authentication_form_CreatePage(wpLicense);
-;end;
+[Code]
+var
+  EyeOneDllExistsPage: TWizardPage;
+  DownloadSoftwareButton: TButton;
+  DownloadI1Match: TDownloadWizardPage;
+
+function EyeOneDllExists: Boolean;
+begin
+  Result := FileExists(ExpandConstant('{sys}\EyeOne.dll'));
+end;
+
+procedure DownloadXriteSoftware(Sender: TObject);
+var
+ResultCode: Integer;
+copyres: Boolean;
+begin
+  try
+    DownloadI1Match.Show;
+    DownloadI1Match.Download
+  except
+    Log(GetExceptionMessage);
+    DownloadI1Match.Hide;
+  finally
+    Exec(ExpandConstant('{tmp}\i1Match_3.6.2_Win7.exe'), '', '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+    FileCopy(ExpandConstant('{commonpf32}\GretagMacbeth\i1\Eye-One Match 3\EyeOne.dll'), ExpandConstant('{sys}\EyeOne.dll'), False);
+    EyeOneDllExists
+    DownloadI1Match.Hide;
+  end;
+end;
+
+procedure InitializeWizard();
+begin      
+  EyeOneDllExistsPage := CreateOutputMsgPage(wpSelectTasks,
+  'EyeOne software missing', 'X-Rite EyeOne driver and/or DLL are missing.',
+  'In order to use i1Toolz together with an X-Rite EyeOne instrument, you should download and install the X-Rite EyeOne drivers and DLLs from their website. You can install any piece of software. In order to attempt to download and install X-Rite i1Match software, you can click on the "Download i1Match" button and follow the wizard, please DO NOT CHANGE THE DEFAULT INSTALLATION DIRECTORY or i1Toolz installer will fail to find the required files. THIS INSTALLER DOES NOT DISTRIBUTE ANY X-RITE SOFTWARE, IT SIMPLY DOWNLOADS THE INSTALLER FROM THEIR WEBSITE AND OPENS IT UP FOR THE USER TO CONTINUE THE INSTALLATION, IF WILLING TO DO SO. X-RITE AND EYEONE ARE COPYRIGHTED AND ALL THE RIGHTS BELONG TO X-RITE AND PANTONE.');   
+  DownloadSoftwareButton := TButton.Create(WizardForm);
+  DownloadSoftwareButton.Parent := WizardForm;
+  DownloadSoftwareButton.Caption := 'Download i1Match';
+  DownloadSoftwareButton.Left := 30;
+  DownloadSoftwareButton.Top := WizardForm.NextButton.Top;
+  DownloadSoftwareButton.Width := 150;
+  DownloadSoftwareButton.OnClick := @DownloadXriteSoftware;
+
+  DownloadI1Match := CreateDownloadPage('Downloading i1Match Installer', 'An attempt to download the X-Rite i1Match Installer from the X-Rite website is underway.', nil);
+  DownloadI1Match.Add('https://downloads.xrite.com/downloads/software/GMB/Eye-One_Match/v3.6.2/i1Match_3.6.2_Win7.exe','i1Match_3.6.2_Win7.exe','');
+
+  FileCopy(ExpandConstant('{commonpf32}\GretagMacbeth\i1\Eye-One Match 3\EyeOne.dll'), ExpandConstant('{sys}\EyeOne.dll'), False);
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  // make your button visible only when the page that is just to be displayed is the components page
+  DownloadSoftwareButton.Visible := CurPageID = EyeOneDllExistsPage.ID;
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  if PageID = EyeOneDllExistsPage.ID then
+    begin
+      Result := EyeOneDllExists;
+    end; 
+end;
